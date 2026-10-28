@@ -1,2 +1,21 @@
-# 2026GISDaySantaClara
-GIS Day Santa Clara 2026 — Yoh Kawano
+# GIS Day Santa Clara 2026
+
+Yoh Kawano’s HTML presentation.
+
+Open `index.html` locally or use GitHub Pages. No dependencies or build step.
+
+Arrow keys or Space advance. Swipe on touch screens. F toggles fullscreen, O opens the overview, N opens optional speaker cues, and B blanks the screen. Controls disappear while presenting.
+
+## Sources
+
+Selected original images from Yoh’s decks:
+
+- [Disaster research and Human Error](https://docs.google.com/presentation/d/1uw0dEqS3s9ILpHObI-v_7bSmMJ3ctJ93QNtwSyBNDJ8/edit)
+- [History of web mapping](https://docs.google.com/presentation/d/1yMkD9n1XITax5FGPjBi1xWmJxr3Vex2ZyiNTrRXTg3k/edit)
+- [Yoh’s portfolio](https://yohman.github.io/yoh/index.html?lang=en)
+
+Photographs display in black and white. Mapping screenshots retain their original colors, which encode information. Source images retain their proportions. Archival interfaces and satellite imagery fit the screen without cropping.
+
+The last slide provides the spoken handoff to two students. Their names and portraits have not been inferred from group photographs.
+
+Images remain the property of their original rights holders. No license to reuse the photography or source material is granted by this repository.

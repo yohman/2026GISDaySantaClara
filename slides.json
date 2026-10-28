@@ -1,0 +1,169 @@
+[
+  {
+    "text": "Where does your memory live?",
+    "note": "Opening question. Pause and let people think of a place before you introduce yourself."
+  },
+  {
+    "text": "Yoh Kawano",
+    "note": "Introduce yourself in your own words. GIS Day Santa Clara, 2026."
+  },
+  {
+    "text": "UCLA, 2000",
+    "note": "Start with your early work at UCLA and the Center for Neighborhood Knowledge."
+  },
+  {
+    "image": "nkla.jpg",
+    "alt": "Neighborhood Knowledge Los Angeles: early web mapping interface",
+    "color": true,
+    "fit": true,
+    "note": "Neighborhood Knowledge Los Angeles, 2000. Public access to neighborhood data."
+  },
+  {
+    "text": "2010",
+    "note": ""
+  },
+  {
+    "image": "hypercities.jpg",
+    "alt": "HyperCities: historical photographs layered into a three-dimensional city map",
+    "color": true,
+    "fit": true,
+    "note": "HyperCities and thick mapping. Historical memory within geographic space."
+  },
+  {
+    "image": "urban-humanities.jpg",
+    "alt": "UCLA Urban Humanities workshop",
+    "color": false,
+    "fit": false,
+    "note": "Urban Humanities Initiative. Mapping and learning with people."
+  },
+  {
+    "text": "Banda Aceh, 2004",
+    "note": "Disaster research. Introduce the 2004 Indian Ocean tsunami and your subsequent work in Aceh."
+  },
+  {
+    "image": "aceh-memory.jpg",
+    "alt": "Archival photograph from the Banda Aceh research",
+    "color": "",
+    "fit": false,
+    "note": "A photograph from your Aceh sequence. Speak to its specific history from your fieldwork."
+  },
+  {
+    "image": "aceh-before.jpg",
+    "alt": "Banda Aceh satellite imagery, June 2004",
+    "color": true,
+    "fit": true,
+    "note": "Banda Aceh before the tsunami. June 2004, as dated in the source deck."
+  },
+  {
+    "image": "aceh-after.jpg",
+    "alt": "Banda Aceh satellite imagery, January 2005",
+    "color": true,
+    "fit": true,
+    "note": "The same place after the tsunami. January 2005, as dated in the source deck."
+  },
+  {
+    "text": "Fukushima, 2011",
+    "note": "The earthquake and nuclear disaster lead into your fieldwork. The following photographs document later research, not the day of the disaster."
+  },
+  {
+    "image": "fukushima-fieldwork.jpg",
+    "alt": "Fieldwork team in protective clothing in Fukushima",
+    "color": false,
+    "fit": false,
+    "note": "Your Fukushima fieldwork. Explain the monitoring and spatial research."
+  },
+  {
+    "image": "radiation-map.jpg",
+    "alt": "Fukushima fieldwork mapping interface",
+    "color": true,
+    "fit": true,
+    "note": "Radiation and spatial data from your fieldwork. Preserve map colors because they encode information."
+  },
+  {
+    "image": "namie.jpg",
+    "alt": "A street in Namie Town",
+    "color": false,
+    "fit": false,
+    "note": "Namie Town. Transition from the mapped landscape to lived experience."
+  },
+  {
+    "text": "What is missing from the map?",
+    "note": "Drawn from your question in the source deck: 「地図」にないものは何？"
+  },
+  {
+    "text": "Spatial ethnography",
+    "note": "The people whose stories changed the direction of the work."
+  },
+  {
+    "image": "tomoko.jpg",
+    "alt": "Tomoko, inn owner, from the spatial ethnography portraits",
+    "color": false,
+    "fit": false,
+    "note": "Tomoko, inn owner. Source deck identifies her by name and role."
+  },
+  {
+    "image": "sueko.jpg",
+    "alt": "Sueko in her home, from the spatial ethnography portraits",
+    "color": false,
+    "fit": false,
+    "note": "Sueko, displaced Namie resident. Speak from your own experience with her."
+  },
+  {
+    "image": "yoshizawa.jpg",
+    "alt": "Yoshizawa, cattle farmer, from the spatial ethnography portraits",
+    "color": false,
+    "fit": false,
+    "note": "Yoshizawa, cattle farmer. Source deck identifies him by name and role."
+  },
+  {
+    "text": "Human Error, 2019",
+    "note": "Explain how listening and spatial ethnography led you to documentary film."
+  },
+  {
+    "image": "human-error.jpg",
+    "alt": "Still from Human Error: a person in protective clothing on an outdoor staircase",
+    "color": false,
+    "fit": false,
+    "note": "Human Error, 2019. Image from your portfolio."
+  },
+  {
+    "image": "screening.jpg",
+    "alt": "Residents watching a film together in a room",
+    "color": false,
+    "fit": false,
+    "note": "Film, dialogue, and the people who took part. This photograph is from the screening sequence in your source deck."
+  },
+  {
+    "text": "Reitaku",
+    "note": "Describe the shift in your role toward mentorship and student-led work."
+  },
+  {
+    "image": "reitaku-film.jpg",
+    "alt": "Students operating a camera during an interview in a pottery studio",
+    "color": false,
+    "fit": false,
+    "note": "Student filmmaking. The camera passes into their hands."
+  },
+  {
+    "text": "Zemi",
+    "note": "Your seminars and mentorship. Introduce how students lead their own projects."
+  },
+  {
+    "image": "reitaku-interview.jpg",
+    "alt": "Student film crew conducting an interview in a home",
+    "color": false,
+    "fit": false,
+    "note": "An image from your Reitaku source deck. Speak about learning together through fieldwork and filmmaking."
+  },
+  {
+    "image": "reitaku-community.jpg",
+    "alt": "Yoh with students on a field",
+    "color": false,
+    "fit": false,
+    "note": "A shared moment with students at Reitaku. Introduce your two presenters aloud without assigning unverified identities to this group photograph."
+  },
+  {
+    "text": "Over to you",
+    "note": "Introduce your two beloved students by name and hand over the presentation."
+  }
+]
