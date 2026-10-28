@@ -104,13 +104,6 @@
     "color": true
   },
   {
-    "image": "hyper-detail.jpg",
-    "alt": "Detail of the HyperCities TimeWell",
-    "note": "https://github.com/yohman/hypercities/blob/main/assets/readme/timewell-detail.jpg",
-    "fit": true,
-    "color": true
-  },
-  {
     "text": "Banda Aceh, 2004",
     "note": "Disaster research. Introduce the 2004 Indian Ocean tsunami and your subsequent work in Aceh.",
     "emphasis": "Banda Aceh"
