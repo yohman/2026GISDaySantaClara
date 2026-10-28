@@ -19,3 +19,17 @@ Photographs display in black and white. Mapping screenshots retain their origina
 The last slide provides the spoken handoff to two students. Their names and portraits have not been inferred from group photographs.
 
 Images remain the property of their original rights holders. No license to reuse the photography or source material is granted by this repository.
+
+
+## Expanded visual sequence
+
+The current deck uses locally hosted Newsreader by Production Type (SIL Open Font License, see FONT-LICENSE.txt). Selected words are emphasized through brightness and italics.
+
+Additional sources:
+
+- Biography screenshot: https://yohman.github.io/yoh/about.html?lang=en
+- HyperCities 2026 screenshots: https://github.com/yohman/hypercities/tree/main/assets/readme
+- Selected Fukushima production photographs supplied by Yoh (2017 and 2025).
+- Selected photographs from the Airi film shoot supplied by Yoh (February 2026).
+
+The historical NKCA screenshot comes from slide 14 of the supplied mapping deck. Screenshots of historical interfaces and the 2026 HyperCities remain uncropped.

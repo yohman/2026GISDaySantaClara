@@ -1,15 +1,28 @@
 [
   {
     "text": "Where does your memory live?",
-    "note": "Opening question. Pause and let people think of a place before you introduce yourself."
+    "note": "Opening question. Pause and let people think of a place before you introduce yourself.",
+    "emphasis": "memory",
+    "breakBefore": "memory"
   },
   {
-    "text": "Yoh Kawano",
-    "note": "Introduce yourself in your own words. GIS Day Santa Clara, 2026."
+    "image": "yoh-bio.jpg",
+    "alt": "Screenshot of Yoh’s biography page",
+    "note": "https://yohman.github.io/yoh/about.html?lang=en",
+    "fit": true,
+    "color": true
   },
   {
     "text": "UCLA, 2000",
-    "note": "Start with your early work at UCLA and the Center for Neighborhood Knowledge."
+    "note": "Start with your early work at UCLA and the Center for Neighborhood Knowledge.",
+    "emphasis": "UCLA"
+  },
+  {
+    "image": "nkla-home.jpg",
+    "alt": "Neighborhood Knowledge Los Angeles homepage",
+    "note": "History of web mapping source deck, slide 6.",
+    "fit": true,
+    "color": true
   },
   {
     "image": "nkla.jpg",
@@ -17,6 +30,27 @@
     "color": true,
     "fit": true,
     "note": "Neighborhood Knowledge Los Angeles, 2000. Public access to neighborhood data."
+  },
+  {
+    "image": "nkca.jpg",
+    "alt": "Neighborhood Knowledge California maproom",
+    "note": "History of web mapping source deck, slide 14.",
+    "fit": true,
+    "color": true
+  },
+  {
+    "image": "lila.jpg",
+    "alt": "Living Independently in Los Angeles maproom",
+    "note": "History of web mapping source deck, slide 8.",
+    "fit": true,
+    "color": true
+  },
+  {
+    "image": "healthy-city.jpg",
+    "alt": "Healthy City service mapping interface",
+    "note": "History of web mapping source deck, slide 9.",
+    "fit": true,
+    "color": true
   },
   {
     "text": "2010",
@@ -30,6 +64,13 @@
     "note": "HyperCities and thick mapping. Historical memory within geographic space."
   },
   {
+    "image": "hypercities-tehran.jpg",
+    "alt": "HyperCities mapping the 2009 election protests in Tehran",
+    "note": "History of web mapping source deck, slide 14. By Xárene Eskandar.",
+    "fit": true,
+    "color": true
+  },
+  {
     "image": "urban-humanities.jpg",
     "alt": "UCLA Urban Humanities workshop",
     "color": false,
@@ -37,8 +78,42 @@
     "note": "Urban Humanities Initiative. Mapping and learning with people."
   },
   {
+    "image": "urban-humanities-table.jpg",
+    "alt": "UCLA Urban Humanities participants working around a large paper map",
+    "note": "History of web mapping source deck, slide 16.",
+    "fit": false,
+    "color": false
+  },
+  {
+    "text": "HyperCities, 2026",
+    "emphasis": "HyperCities",
+    "note": "The current HyperCities site, rebuilt in 2026. https://hypercities.com/"
+  },
+  {
+    "image": "hyper-world.png",
+    "alt": "The current HyperCities historical map field",
+    "note": "https://github.com/yohman/hypercities/blob/main/assets/readme/world-field-current.png",
+    "fit": true,
+    "color": true
+  },
+  {
+    "image": "hyper-timewell.png",
+    "alt": "The current HyperCities TimeWell in Berlin",
+    "note": "https://github.com/yohman/hypercities/blob/main/assets/readme/timewell-core-current.png",
+    "fit": true,
+    "color": true
+  },
+  {
+    "image": "hyper-detail.jpg",
+    "alt": "Detail of the HyperCities TimeWell",
+    "note": "https://github.com/yohman/hypercities/blob/main/assets/readme/timewell-detail.jpg",
+    "fit": true,
+    "color": true
+  },
+  {
     "text": "Banda Aceh, 2004",
-    "note": "Disaster research. Introduce the 2004 Indian Ocean tsunami and your subsequent work in Aceh."
+    "note": "Disaster research. Introduce the 2004 Indian Ocean tsunami and your subsequent work in Aceh.",
+    "emphasis": "Banda Aceh"
   },
   {
     "image": "aceh-memory.jpg",
@@ -63,7 +138,8 @@
   },
   {
     "text": "Fukushima, 2011",
-    "note": "The earthquake and nuclear disaster lead into your fieldwork. The following photographs document later research, not the day of the disaster."
+    "note": "The earthquake and nuclear disaster lead into your fieldwork. The following photographs document later research, not the day of the disaster.",
+    "emphasis": "Fukushima"
   },
   {
     "image": "fukushima-fieldwork.jpg",
@@ -88,11 +164,14 @@
   },
   {
     "text": "What is missing from the map?",
-    "note": "Drawn from your question in the source deck: 「地図」にないものは何？"
+    "note": "Drawn from your question in the source deck: 「地図」にないものは何？",
+    "emphasis": "missing",
+    "breakBefore": "missing"
   },
   {
     "text": "Spatial ethnography",
-    "note": "The people whose stories changed the direction of the work."
+    "note": "The people whose stories changed the direction of the work.",
+    "emphasis": "ethnography"
   },
   {
     "image": "tomoko.jpg",
@@ -100,6 +179,20 @@
     "color": false,
     "fit": false,
     "note": "Tomoko, inn owner. Source deck identifies her by name and role."
+  },
+  {
+    "image": "koichi.jpg",
+    "alt": "Koichi, Nemoto Farm",
+    "note": "Disaster research source deck, spatial ethnography portraits.",
+    "fit": false,
+    "color": false
+  },
+  {
+    "image": "sachiko.jpg",
+    "alt": "Sachiko, Nemoto Farm",
+    "note": "Disaster research source deck, spatial ethnography portraits.",
+    "fit": false,
+    "color": false
   },
   {
     "image": "sueko.jpg",
@@ -116,8 +209,37 @@
     "note": "Yoshizawa, cattle farmer. Source deck identifies him by name and role."
   },
   {
+    "image": "guji.jpg",
+    "alt": "Guji, head priest",
+    "note": "Disaster research source deck, spatial ethnography portraits.",
+    "fit": false,
+    "color": false
+  },
+  {
+    "image": "fukushima-shoot-sueko.jpg",
+    "alt": "Filming an interview with a resident in her home",
+    "note": "Fukushima photo album. IMG_0406.JPG, 30 March 2017.",
+    "fit": false,
+    "color": false
+  },
+  {
+    "image": "fukushima-shoot-resident.jpg",
+    "alt": "A camera and microphone set up for a Fukushima interview",
+    "note": "Fukushima photo album. IMG_0897.JPG, 5 July 2017.",
+    "fit": false,
+    "color": false
+  },
+  {
+    "image": "fukushima-shoot-interview.jpg",
+    "alt": "Behind the camera during a Fukushima resident interview",
+    "note": "Fukushima photo album. IMG_0902.JPG, 6 July 2017.",
+    "fit": false,
+    "color": false
+  },
+  {
     "text": "Human Error, 2019",
-    "note": "Explain how listening and spatial ethnography led you to documentary film."
+    "note": "Explain how listening and spatial ethnography led you to documentary film.",
+    "emphasis": "Human Error"
   },
   {
     "image": "human-error.jpg",
@@ -134,8 +256,49 @@
     "note": "Film, dialogue, and the people who took part. This photograph is from the screening sequence in your source deck."
   },
   {
+    "text": "Airi, 2026",
+    "emphasis": "Airi",
+    "note": "Airi. Current film work continuing the Fukushima narrative."
+  },
+  {
+    "image": "airi-still.jpg",
+    "alt": "Airi looking out of a train window",
+    "note": "Yoh’s portfolio. Airi, 2026.",
+    "fit": false,
+    "color": false
+  },
+  {
+    "image": "airi-interview-2025.jpg",
+    "alt": "A camera filming a seated interview participant",
+    "note": "Fukushima photo album. DSC_0295.JPG, October 2025.",
+    "fit": false,
+    "color": false
+  },
+  {
+    "image": "airi-shoot-wide.jpg",
+    "alt": "Airi film shoot: interview participant and crew in a timber yard",
+    "note": "Fukushima Airi Film Shoot Feb 21, 2026 album. IMG_8910.JPG.",
+    "fit": false,
+    "color": false
+  },
+  {
+    "image": "airi-shoot-camera.jpg",
+    "alt": "Airi film shoot: the crew watching the camera",
+    "note": "Fukushima Airi Film Shoot Feb 21, 2026 album. IMG_8913.JPG.",
+    "fit": false,
+    "color": false
+  },
+  {
+    "image": "airi-shoot-portrait.jpg",
+    "alt": "Airi film shoot: a woman standing in the timber yard",
+    "note": "Fukushima Airi Film Shoot Feb 21, 2026 album. IMG_8916.JPG.",
+    "fit": false,
+    "color": false
+  },
+  {
     "text": "Reitaku",
-    "note": "Describe the shift in your role toward mentorship and student-led work."
+    "note": "Describe the shift in your role toward mentorship and student-led work.",
+    "emphasis": "Reitaku"
   },
   {
     "image": "reitaku-film.jpg",
@@ -146,7 +309,8 @@
   },
   {
     "text": "Zemi",
-    "note": "Your seminars and mentorship. Introduce how students lead their own projects."
+    "note": "Your seminars and mentorship. Introduce how students lead their own projects.",
+    "emphasis": "Zemi"
   },
   {
     "image": "reitaku-interview.jpg",
@@ -164,6 +328,7 @@
   },
   {
     "text": "Over to you",
-    "note": "Introduce your two beloved students by name and hand over the presentation."
+    "note": "Introduce your two beloved students by name and hand over the presentation.",
+    "emphasis": "you"
   }
 ]
