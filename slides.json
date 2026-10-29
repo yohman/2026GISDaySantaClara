@@ -289,6 +289,13 @@
     "color": false
   },
   {
+    "image": "airi-screening-group.jpg",
+    "alt": "Group photograph after an Airi screening",
+    "color": false,
+    "fit": false,
+    "note": "Activity photograph supplied by Yoh. image(10).png"
+  },
+  {
     "text": "Reitaku",
     "note": "Describe the shift in your role toward mentorship and student-led work.",
     "emphasis": "Reitaku"
@@ -318,6 +325,110 @@
     "color": false,
     "fit": false,
     "note": "A shared moment with students at Reitaku. Introduce your two presenters aloud without assigning unverified identities to this group photograph."
+  },
+  {
+    "images": [
+      {
+        "src": "zemi-wheelchair-participant.jpg",
+        "alt": "Participant using a wheelchair",
+        "portrait": true,
+        "ratio": 0.5628245067497404
+      },
+      {
+        "src": "zemi-workshop-floor.jpg",
+        "alt": "Student workshop around paper and sticky notes",
+        "position": "center center"
+      }
+    ],
+    "alt": "A participant using a wheelchair and a student workshop on the floor",
+    "note": "Activity photographs supplied by Yoh: image(8).png; image(3).png"
+  },
+  {
+    "image": "zemi-museum-model.jpg",
+    "alt": "Students visiting a museum with a large city model",
+    "color": false,
+    "fit": false,
+    "note": "Activity photograph supplied by Yoh. image(2).png"
+  },
+  {
+    "image": "zemi-classroom-screening.jpg",
+    "alt": "A group watching a projection in a classroom",
+    "color": false,
+    "fit": false,
+    "note": "Activity photograph supplied by Yoh. image(4).png"
+  },
+  {
+    "image": "zemi-remote-session-wide.jpg",
+    "alt": "Students and faculty taking part in an online group session",
+    "color": false,
+    "fit": false,
+    "note": "Activity photograph supplied by Yoh. image(20261028-235117).png"
+  },
+  {
+    "image": "zemi-remote-session-table.jpg",
+    "alt": "Students with laptops around the table during an online session",
+    "color": false,
+    "fit": false,
+    "note": "Activity photograph supplied by Yoh. image(20261028-235134).png"
+  },
+  {
+    "image": "zemi-lab-table.jpg",
+    "alt": "A gathering around a table in the lab",
+    "color": false,
+    "fit": false,
+    "note": "Activity photograph supplied by Yoh. image(5).png"
+  },
+  {
+    "images": [
+      {
+        "src": "zemi-mapathon-poster.jpg",
+        "alt": "International Humanitarian Mapathon 2026 event poster",
+        "portrait": true,
+        "ratio": 0.7071651090342679
+      },
+      {
+        "src": "zemi-student-laptop.jpg",
+        "alt": "Student using a laptop in a hall",
+        "position": "left center"
+      }
+    ],
+    "alt": "International Humanitarian Mapathon 2026 poster and a student working on a laptop",
+    "note": "Activity photographs supplied by Yoh: image(6).png; image(9).png"
+  },
+  {
+    "image": "zemi-group-activity.jpg",
+    "alt": "Students taking part in a group activity in a large room",
+    "color": false,
+    "fit": false,
+    "note": "Activity photograph supplied by Yoh. image(20261028-234913).png"
+  },
+  {
+    "image": "zemi-cafe-screening.jpg",
+    "alt": "A group screening in a cafe",
+    "color": false,
+    "fit": false,
+    "note": "Activity photograph supplied by Yoh. image(20261028-235203).png"
+  },
+  {
+    "image": "zemi-cafe-discussion.jpg",
+    "alt": "Students talking around a table in a cafe",
+    "color": false,
+    "fit": false,
+    "note": "Activity photograph supplied by Yoh. image(20261028-235306).png"
+  },
+  {
+    "image": "zemi-shared-meal.jpg",
+    "alt": "Students sharing a meal around a table",
+    "color": false,
+    "fit": false,
+    "note": "Activity photograph supplied by Yoh. image(7).png"
+  },
+  {
+    "image": "zemi-workshop-group.jpg",
+    "alt": "Yoh and students posing together after a workshop",
+    "color": false,
+    "fit": false,
+    "note": "Activity photograph supplied by Yoh. image(20261028-234938).png"
   },
   {
     "text": "Over to you",
