@@ -38,6 +38,8 @@ The historical NKCA screenshot comes from slide 14 of the supplied mapping deck.
 
 The **Slide size** slider resizes the editor thumbnails from compact to large. Its setting is remembered in the current browser and does not change the presentation’s slide proportions or font sizes.
 
+The editor header stays within two toolbar rows. File actions (**Export edits**, **Import edits**, **Download HTML**) are in the **⋯** menu. Card actions stay on one line: drag grip, earlier/later arrows, pencil for title editing, and trash. Icon tooltips and accessible labels describe their actions. On very narrow screens the toolbar rows scroll horizontally instead of wrapping.
+
 Open **Edit slides**, press **E** or **O**, or visit `?edit` to review the 256-slide source collection. Click an image to present from it. Drag a card by its grip to reorder. The earlier/later arrows and **Move to** number work on touch devices too. Select multiple cards to remove or move a group; Shift-click selects a range. Search and chapter filters narrow the collection.
 
 **Add title** creates a black title slide after the selected/current slide, or at a chosen position. Enter text and optional emphasized words, choose the two font colors, and adjust the font size with the slider or number. Line breaks are preserved. Existing title cards have an **Edit title** action. Created titles and title edits are included in browser autosave, undo/redo, JSON export/import, and edited HTML downloads.

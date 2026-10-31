@@ -204,7 +204,15 @@
   }
   function cardButton(text, name, action) {
     const b = document.createElement('button'); b.textContent = text;
-    b.setAttribute('aria-label', name); b.onclick = action; return b;
+    b.setAttribute('aria-label', name); b.title = name; b.onclick = action; return b;
+  }
+  function glyphButton(kind, name, action) {
+    const b = cardButton('', name, action);
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('aria-hidden', 'true'); svg.classList.add('glyph');
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', kind === 'trash' ? 'M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7' : 'M14 5l5 5M4 20l5-1L20 8a2 2 0 0 0-5-5L4 14z');
+    svg.append(p); b.append(svg); return b;
   }
   function pointerGrip(handle, id) {
     handle.addEventListener('pointerdown', start => {
@@ -281,10 +289,11 @@
         const handle = document.createElement('span'); handle.className = 'drag-handle'; handle.textContent = '⠿'; handle.title = 'Drag to reorder'; handle.setAttribute('aria-hidden', 'true'); pointerGrip(handle, id); actions.append(handle);
         const before = cardButton('←', `Move slide ${number} earlier`, () => move([id], index - 1)); before.disabled = index === 0;
         const after = cardButton('→', `Move slide ${number} later`, () => move([id], index + 1)); after.disabled = index === order.length - 1;
-        const del = cardButton('× Remove', `Remove slide ${number}`, () => remove([id])); del.className = 'remove';
-        actions.append(before, after, del);
-        if (s.text) actions.append(cardButton('✎ Edit title', `Edit title slide ${number}`, () => openTitle(id)));
-      } else actions.append(cardButton('↶ Restore', `Restore ${title}`, () => commit(model.restore(state, [id]), 'Slide restored')));
+        const del = glyphButton('trash', `Remove slide ${number}`, () => remove([id])); del.className = 'remove';
+        actions.append(before, after);
+        if (s.text) actions.append(glyphButton('pencil', `Edit title slide ${number}`, () => openTitle(id)));
+        actions.append(del);
+      } else actions.append(cardButton('↶', `Restore ${title}`, () => commit(model.restore(state, [id]), 'Slide restored')));
       card.append(actions);
       card.addEventListener('click', e => {
         if (!e.target.closest('button,input,.drag-handle')) select(id, e.shiftKey, !selected.has(id));
@@ -389,12 +398,14 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
   $('export').onclick = () => {
+    $('file-menu').hidePopover();
     const data = { format: 'gisday-santaclara-review', version: 1, exportedAt: new Date().toISOString(),
       ...state, slides: model.active(state).map(slide) };
     download(JSON.stringify(data, null, 2), 'GIS-Day-Santa-Clara-edits.json', 'application/json');
     toast('Edits exported. Import them on another browser or send them back for PowerPoint.');
   };
   $('download-deck').onclick = () => {
+    $('file-menu').hidePopover();
     const doc = document.documentElement.cloneNode(true);
     doc.querySelector('#deck-data').textContent = JSON.stringify(model.active(state).map(slide)).replace(/</g, '\\u003c');
     doc.querySelector('#stage').replaceChildren(); doc.querySelector('#review-grid').replaceChildren();
@@ -414,9 +425,7 @@
     } catch (err) { toast(err.message || 'Could not read that edits file.'); }
     e.target.value = '';
   };
-  document.querySelector('.file-label').onkeydown = e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('import-file').click(); }
-  };
+  $('import-action').onclick = () => { $('import-file').click(); $('file-menu').hidePopover(); };
   $('undo').onclick = undo; $('redo').onclick = redo; $('toast-undo').onclick = undo;
   $('delete-selected').onclick = () => remove([...selected]);
   $('restore-selected').onclick = () => { const toRestore = [...selected]; selected.clear(); commit(model.restore(state, toRestore), 'Slides restored'); };
