@@ -416,6 +416,16 @@
     "id": "s-9925550620d6"
   },
   {
+    "image": "hyper-detail.jpg",
+    "alt": "HyperCities TimeWell detail with New York map layers from 1639 to 2006",
+    "section": "HyperCities",
+    "color": true,
+    "fit": true,
+    "id": "s-ed06f35fd61d",
+    "note": "HyperCities 2026 TimeWell detail. https://hypercities.com/",
+    "source": "https://hypercities.com/"
+  },
+  {
     "image": "ucla-archive-s14-2.jpg",
     "alt": "HyperCities book cover",
     "section": "HyperCities",
