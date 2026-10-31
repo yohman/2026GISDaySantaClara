@@ -11,7 +11,7 @@
   try { saved = JSON.parse(localStorage.getItem(key) || 'null'); } catch { storageError = true; }
   let state = model.reconcile(ids, saved);
   const slide = id => state.titles[id] || byId.get(id);
-  let past = [], future = [], selected = new Set(), view = 'active', dragIds = [];
+  let past = [], future = [], selected = new Set(), view = 'active', dragIds = [], suppressCardClickUntil = 0;
   let current = 0, visible = [], timer, toastTimer, lastSelected;
   let restoredCursor = saved?.currentId;
   const stage = $('stage'), review = $('review'), grid = $('review-grid');
@@ -168,12 +168,16 @@
     });
   }
   function updateSelection() {
+    document.body.classList.toggle('selection-active', selected.size > 0);
     grid.querySelectorAll('.card').forEach(card => {
       const checked = selected.has(card.dataset.id);
       card.classList.toggle('selected', checked);
       card.querySelector('input[type=checkbox]').checked = checked;
     });
-    $('selection-count').textContent = selected.size ? `${selected.size} selected` : 'Select slides to remove or move';
+    $('selection-count').textContent = selected.size ? `${selected.size} selected · Click slides to add or remove` : 'Click a thumbnail to preview, or select a slide to begin';
+    const shown = matching();
+    $('select-all').disabled = !shown.length || shown.every(id => selected.has(id));
+    $('deselect-all').disabled = !selected.size;
     $('delete-selected').disabled = !selected.size || view !== 'active';
     $('restore-selected').disabled = !selected.size || view !== 'removed';
     $('move-selected').disabled = !selected.size || view !== 'active';
@@ -211,6 +215,7 @@
         handle.removeEventListener('pointermove', track); handle.removeEventListener('pointerup', finish); handle.removeEventListener('pointercancel', cancel);
         if (handle.hasPointerCapture(e.pointerId)) handle.releasePointerCapture(e.pointerId);
         clear();
+        if (moved) suppressCardClickUntil = performance.now() + 350;
         if (moved && target) {
           const remaining = model.active(state).filter(x => !moving.includes(x));
           move(moving, remaining.indexOf(target) + (after ? 1 : 0));
@@ -236,11 +241,14 @@
       const s = slide(id), index = order.indexOf(id), card = document.createElement('article');
       card.className = 'card'; card.dataset.id = id; card.draggable = view === 'active';
       card.addEventListener('click', e => {
-        if (selected.size !== 1 || selected.has(id)) return;
+        if (performance.now() < suppressCardClickUntil) { e.preventDefault(); e.stopPropagation(); return; }
+        if (!selected.size) return;
         const anchor = [...selected][0];
-        selected = new Set(model.range(view === 'active' ? model.active(state) : matching(), anchor, id));
+        if (selected.has(id)) selected.delete(id);
+        else if (selected.size === 1) selected = new Set(model.range(view === 'active' ? model.active(state) : matching(), anchor, id));
+        else selected.add(id);
         if (!e.target.matches('input[type=checkbox]')) e.preventDefault();
-        e.stopPropagation(); lastSelected = anchor; updateSelection();
+        e.stopPropagation(); lastSelected = selected.size ? anchor : undefined; updateSelection();
       }, true);
       const title = label(s), number = index >= 0 ? String(index + 1).padStart(2, '0') : '—';
       const thumb = cardButton('', `Preview ${number}: ${title}`, () => {
@@ -260,10 +268,10 @@
         const handle = document.createElement('span'); handle.className = 'drag-handle'; handle.textContent = '⠿'; handle.title = 'Drag to reorder'; handle.setAttribute('aria-hidden', 'true'); pointerGrip(handle, id); actions.append(handle);
         const before = cardButton('←', `Move slide ${number} earlier`, () => move([id], index - 1)); before.disabled = index === 0;
         const after = cardButton('→', `Move slide ${number} later`, () => move([id], index + 1)); after.disabled = index === order.length - 1;
-        const del = cardButton('Remove', `Remove slide ${number}`, () => remove([id])); del.className = 'remove';
+        const del = cardButton('× Remove', `Remove slide ${number}`, () => remove([id])); del.className = 'remove';
         actions.append(before, after, del);
-        if (s.text) actions.append(cardButton('Edit title', `Edit title slide ${number}`, () => openTitle(id)));
-      } else actions.append(cardButton('Restore', `Restore ${title}`, () => commit(model.restore(state, [id]), 'Slide restored')));
+        if (s.text) actions.append(cardButton('✎ Edit title', `Edit title slide ${number}`, () => openTitle(id)));
+      } else actions.append(cardButton('↶ Restore', `Restore ${title}`, () => commit(model.restore(state, [id]), 'Slide restored')));
       card.append(actions);
       card.addEventListener('click', e => {
         if (!e.target.closest('button,input,.drag-handle')) select(id, e.shiftKey, !selected.has(id));
@@ -402,7 +410,8 @@
   $('move-selected').onclick = () => { const n = Number($('move-position').value); if (!Number.isInteger(n) || n < 1 || n > visible.length) { toast(`Enter a slide number from 1 to ${visible.length}.`); return; } move([...selected], n - 1); };
   $('active-tab').onclick = () => { view = 'active'; selected.clear(); renderReview(); };
   $('removed-tab').onclick = () => { view = 'removed'; selected.clear(); renderReview(); };
-  $('select-all').onclick = () => { const shown = matching(); if (shown.length && shown.every(id => selected.has(id))) shown.forEach(id => selected.delete(id)); else shown.forEach(id => selected.add(id)); updateSelection(); };
+  $('select-all').onclick = () => { matching().forEach(id => selected.add(id)); updateSelection(); };
+  $('deselect-all').onclick = () => { selected.clear(); lastSelected = undefined; updateSelection(); };
   $('search').oninput = () => { selected.clear(); renderReview(); };
   $('section').onchange = () => { selected.clear(); renderReview(); };
   $('prev').onclick = () => advance(-1); $('next').onclick = () => advance(1);
@@ -417,7 +426,7 @@
     if (review.open) {
       if (typing) return;
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); }
-      else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'a') { e.preventDefault(); $('select-all').click(); }
+      else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'a') { e.preventDefault(); $(e.shiftKey ? 'deselect-all' : 'select-all').click(); }
       else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); if (view === 'active') remove([...selected]); }
       return;
     }
