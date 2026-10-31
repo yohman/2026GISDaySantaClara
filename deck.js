@@ -83,7 +83,10 @@
     $('remove-current').disabled = !visible.length;
     $('note').textContent = byId.get(visible[current])?.note || '';
     $('announce').textContent = visible.length ? `Slide ${current + 1}` : 'All slides removed. Open Edit slides to restore them.';
-    if (visible.length) history.replaceState(null, '', '#' + (current + 1));
+    if (visible.length) {
+      const url = new URL(location.href); url.hash = String(current + 1);
+      try { history.replaceState(null, '', url.href); } catch { /* A local HTML snapshot can still present. */ }
+    }
     loadNearby();
     if (remember) save();
   }
