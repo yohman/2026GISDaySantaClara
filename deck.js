@@ -15,6 +15,19 @@
   let current = 0, visible = [], timer, toastTimer, lastSelected;
   let restoredCursor = saved?.currentId;
   const stage = $('stage'), review = $('review'), grid = $('review-grid');
+  const sizeKey = 'gisday-santaclara-thumbnail-size';
+  function setSlideSize(value, persist = false) {
+    const size = Math.max(120, Math.min(480, Number(value) || 235));
+    grid.style.setProperty('--slide-width', size + 'px');
+    $('slide-size').value = size;
+    $('slide-size').setAttribute('aria-valuetext', `${Math.round(size / 235 * 100)} percent`);
+    $('slide-size-value').textContent = `${Math.round(size / 235 * 100)}%`;
+    if (persist) { try { localStorage.setItem(sizeKey, String(size)); } catch {} }
+  }
+  let savedSize;
+  try { savedSize = localStorage.getItem(sizeKey); } catch {}
+  setSlideSize(savedSize || (innerWidth <= 650 ? 150 : 235));
+  $('slide-size').oninput = e => setSlideSize(e.target.value, true);
   const label = s => s.text || s.alt || 'Photograph';
   function copy(s) { return JSON.parse(JSON.stringify(s)); }
   function save() {
