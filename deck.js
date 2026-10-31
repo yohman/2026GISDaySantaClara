@@ -482,6 +482,6 @@
   if (new URLSearchParams(location.search).has('edit')) openReview();
   let cloudWindow;
   const cloudOrigin='https://yoh-frame.wintry-root-3985.chatgpt.site';
-  $('cloud-transfer').onclick=()=>{cloudWindow=window.open(cloudOrigin+'/#transfer','frame-workspace');toast('Opening your cloud workspace…')};
+  $('cloud-transfer').onclick=()=>{const payload={format:'gisday-santaclara-review',version:1,title:'GIS Day Santa Clara 2026',order:state.order,deleted:state.deleted,titles:state.titles,extras:state.extras||{},history:{past:past.slice(-60),future:future.slice(-60)}};const bytes=new TextEncoder().encode(JSON.stringify(payload));let binary='';bytes.forEach(b=>binary+=String.fromCharCode(b));cloudWindow=window.open(cloudOrigin+'/#import='+btoa(binary),'frame-workspace');toast('Opening cloud workspace. After your first sign-in, click Save to cloud again to transfer your edits.')};
   window.addEventListener('message',e=>{if(e.origin!==cloudOrigin||e.source!==cloudWindow||e.data?.type!=='frame-ready')return;cloudWindow.postMessage({type:'frame-import',payload:{format:'gisday-santaclara-review',version:1,title:'GIS Day Santa Clara 2026',order:state.order,deleted:state.deleted,titles:state.titles,extras:state.extras||{},history:{past:past.slice(-60),future:future.slice(-60)}}},cloudOrigin)});
 })();
