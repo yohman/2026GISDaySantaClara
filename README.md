@@ -38,6 +38,10 @@ The historical NKCA screenshot comes from slide 14 of the supplied mapping deck.
 
 Open **Edit slides**, press **E** or **O**, or visit `?edit` to review the 256-slide source collection. Click an image to present from it. Drag a card by its grip to reorder. The earlier/later arrows and **Move to** number work on touch devices too. Select multiple cards to remove or move a group; Shift-click selects a range. Search and chapter filters narrow the collection.
 
+**Add title** creates a black title slide after the selected/current slide, or at a chosen position. Enter text and optional emphasized words, choose the two font colors, and adjust the font size with the slider or number. Line breaks are preserved. Existing title cards have an **Edit title** action. Created titles and title edits are included in browser autosave, undo/redo, JSON export/import, and edited HTML downloads.
+
+When exactly one slide is selected, clicking anywhere on another card selects every slide between them. With nothing selected, clicking a thumbnail previews it. During presentation, **Esc** returns to the editor, including from fullscreen. Slide changes fade through black in 0.5 seconds total (0.25 seconds out, 0.25 seconds in); reduced-motion preferences disable the fade. Rapid navigation cancels the earlier fade and moves to the latest requested slide.
+
 Edits save automatically in the current browser using local storage. They change that browser’s presentation, not the shared GitHub source or another device. Removed slides remain in **Removed** and can be restored. Undo/redo applies during the current page session. New source images can be added later without resurrecting deleted slides.
 
 Use **Export edits** to download a JSON file with the selected slides, order, removed IDs, and source notes. Import it on another browser or send it back for the PowerPoint phase. **Download HTML** creates an edited HTML snapshot; its images, scripts, and fonts load from the published website, so it requires an internet connection. No PowerPoint file is generated in this phase.

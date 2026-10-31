@@ -10,12 +10,13 @@
   let saved, storageError = false;
   try { saved = JSON.parse(localStorage.getItem(key) || 'null'); } catch { storageError = true; }
   let state = model.reconcile(ids, saved);
+  const slide = id => state.titles[id] || byId.get(id);
   let past = [], future = [], selected = new Set(), view = 'active', dragIds = [];
   let current = 0, visible = [], timer, toastTimer, lastSelected;
   let restoredCursor = saved?.currentId;
   const stage = $('stage'), review = $('review'), grid = $('review-grid');
   const label = s => s.text || s.alt || 'Photograph';
-  function copy(s) { return { order: [...s.order], deleted: [...s.deleted] }; }
+  function copy(s) { return JSON.parse(JSON.stringify(s)); }
   function save() {
     try {
       localStorage.setItem(key, JSON.stringify({ ...state, currentId: visible[current], version: 1 }));
@@ -32,6 +33,8 @@
   }
   function phrase(s) {
     const h = document.createElement('h1');
+    if (s.fontSize) h.style.fontSize = `${s.fontSize / 12.8}cqw`;
+    if (s.textColor) h.style.color = s.textColor;
     if (s.emphasis && s.text.includes(s.emphasis)) {
       const at = s.text.indexOf(s.emphasis);
       const before = document.createElement('span'); before.className = 'dim';
@@ -42,6 +45,8 @@
       const after = document.createElement('span'); after.className = 'dim';
       after.textContent = s.text.slice(at + s.emphasis.length); h.append(after);
     } else h.textContent = s.text;
+    if (s.textColor) h.querySelectorAll('.dim').forEach(el => el.style.color = s.textColor);
+    if (s.emphasisColor) h.querySelectorAll('em').forEach(el => el.style.color = s.emphasisColor);
     return h;
   }
   function picture(src, alt, classes, lazy) {
@@ -73,7 +78,31 @@
       stage.children[i]?.querySelectorAll('img[data-src]').forEach(im => { im.src = im.dataset.src; delete im.dataset.src; });
     }
   }
-  function go(index, remember = true) {
+  let fadeToken = 0, pendingIndex = null, fadeAnimation;
+  function cancelFade() {
+    fadeToken++; pendingIndex = null; fadeAnimation?.cancel(); fadeAnimation = null; stage.style.opacity = '1';
+  }
+  async function go(index, remember = true, animate = true) {
+    const target = Math.max(0, Math.min(visible.length - 1, index));
+    if (!animate || !remember || review.open || target === current && pendingIndex === null || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      cancelFade(); show(target, remember); return;
+    }
+    const opacity = getComputedStyle(stage).opacity;
+    const token = ++fadeToken; pendingIndex = target;
+    fadeAnimation?.cancel();
+    try {
+      fadeAnimation = stage.animate([{opacity}, {opacity:0}], {duration:250, easing:'ease-in', fill:'forwards'});
+      await fadeAnimation.finished;
+      if (token !== fadeToken) return;
+      stage.style.opacity = '0'; fadeAnimation.cancel(); show(target, remember);
+      fadeAnimation = stage.animate([{opacity:0}, {opacity:1}], {duration:250, easing:'ease-out', fill:'forwards'});
+      await fadeAnimation.finished;
+      if (token !== fadeToken) return;
+      stage.style.opacity = '1'; fadeAnimation.cancel(); fadeAnimation = null; pendingIndex = null;
+    } catch { /* A newer navigation or edit superseded this fade. */ }
+  }
+  function advance(delta) { go((pendingIndex ?? current) + delta); }
+  function show(index, remember = true) {
     current = Math.max(0, Math.min(visible.length - 1, index));
     [...stage.children].forEach((el, n) => {
       el.classList.toggle('active', n === current); el.setAttribute('aria-hidden', String(n !== current));
@@ -81,7 +110,7 @@
     $('count').textContent = visible.length ? `${current + 1} / ${visible.length}` : '0 slides';
     $('prev').disabled = current <= 0; $('next').disabled = current >= visible.length - 1;
     $('remove-current').disabled = !visible.length;
-    $('note').textContent = byId.get(visible[current])?.note || '';
+    $('note').textContent = slide(visible[current])?.note || '';
     $('announce').textContent = visible.length ? `Slide ${current + 1}` : 'All slides removed. Open Edit slides to restore them.';
     if (visible.length) {
       const url = new URL(location.href); url.hash = String(current + 1);
@@ -91,10 +120,11 @@
     if (remember) save();
   }
   function renderStage(keepId) {
+    cancelFade();
     visible = model.active(state);
     const frag = document.createDocumentFragment();
     visible.forEach(id => {
-      const s = byId.get(id), el = document.createElement('section');
+      const s = slide(id), el = document.createElement('section');
       el.className = 'slide'; el.dataset.slideId = id;
       el.setAttribute('aria-label', label(s)); el.setAttribute('aria-hidden', 'true');
       el.append(visual(s, 'stage')); frag.append(el);
@@ -133,7 +163,7 @@
     const source = view === 'active' ? model.active(state) : state.order.filter(id => state.deleted.includes(id));
     const term = $('search').value.toLowerCase().trim(), section = $('section').value;
     return source.filter(id => {
-      const s = byId.get(id);
+      const s = slide(id);
       return (!section || s.section === section) && (!term || `${label(s)} ${s.note || ''} ${s.section || ''}`.toLowerCase().includes(term));
     });
   }
@@ -203,12 +233,19 @@
     const order = model.active(state);
     $('move-position').max = Math.max(1, order.length);
     shown.forEach(id => {
-      const s = byId.get(id), index = order.indexOf(id), card = document.createElement('article');
+      const s = slide(id), index = order.indexOf(id), card = document.createElement('article');
       card.className = 'card'; card.dataset.id = id; card.draggable = view === 'active';
+      card.addEventListener('click', e => {
+        if (selected.size !== 1 || selected.has(id)) return;
+        const anchor = [...selected][0];
+        selected = new Set(model.range(view === 'active' ? model.active(state) : matching(), anchor, id));
+        if (!e.target.matches('input[type=checkbox]')) e.preventDefault();
+        e.stopPropagation(); lastSelected = anchor; updateSelection();
+      }, true);
       const title = label(s), number = index >= 0 ? String(index + 1).padStart(2, '0') : '—';
       const thumb = cardButton('', `Preview ${number}: ${title}`, () => {
         if (view === 'removed') return;
-        review.close(); go(model.active(state).indexOf(id)); controls();
+        review.close(); go(model.active(state).indexOf(id), true, false); controls();
       });
       thumb.className = 'thumb'; thumb.append(visual(s, 'thumb')); card.append(thumb);
       const info = document.createElement('div'); info.className = 'card-info';
@@ -225,8 +262,12 @@
         const after = cardButton('→', `Move slide ${number} later`, () => move([id], index + 1)); after.disabled = index === order.length - 1;
         const del = cardButton('Remove', `Remove slide ${number}`, () => remove([id])); del.className = 'remove';
         actions.append(before, after, del);
+        if (s.text) actions.append(cardButton('Edit title', `Edit title slide ${number}`, () => openTitle(id)));
       } else actions.append(cardButton('Restore', `Restore ${title}`, () => commit(model.restore(state, [id]), 'Slide restored')));
       card.append(actions);
+      card.addEventListener('click', e => {
+        if (!e.target.closest('button,input,.drag-handle')) select(id, e.shiftKey, !selected.has(id));
+      });
       card.addEventListener('dragstart', e => {
         if (view !== 'active' || e.target.closest('button,input')) { e.preventDefault(); return; }
         dragIds = selected.has(id) ? model.active(state).filter(x => selected.has(x)) : [id];
@@ -256,17 +297,71 @@
     grid.replaceChildren(frag); grid.scrollTop = scroll; updateSelection();
     $('review-count').textContent = `${shown.length} shown · ${catalog.length} in source collection`;
   }
-  function openReview() {
+  function openReview(revealCurrent = false) {
+    cancelFade();
     $('speaker').close(); document.body.classList.remove('blank');
+    if (revealCurrent) { view = 'active'; $('search').value = ''; $('section').value = ''; }
     if (!review.open) review.showModal(); renderReview();
+    if (revealCurrent) requestAnimationFrame(() => [...grid.children].find(el => el.dataset.id === visible[current])?.scrollIntoView({block:'nearest'}));
   }
   function controls() {
     document.body.classList.add('controls'); clearTimeout(timer);
     timer = setTimeout(() => document.body.classList.remove('controls'), 2000);
   }
+  let manualFullscreenExit = false, wasFullscreen = Boolean(document.fullscreenElement);
   async function full() {
-    try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch { controls(); }
+    try { if (document.fullscreenElement) { manualFullscreenExit = true; await document.exitFullscreen(); } else await document.documentElement.requestFullscreen(); } catch { manualFullscreenExit = false; controls(); }
   }
+  document.addEventListener('fullscreenchange', () => {
+    const isFullscreen = Boolean(document.fullscreenElement);
+    if (wasFullscreen && !isFullscreen && !manualFullscreenExit && !review.open && !$('title-editor').open) openReview(true);
+    wasFullscreen = isFullscreen; if (!isFullscreen) manualFullscreenExit = false;
+  });
+  let editingTitleId = null;
+  function titleValues() {
+    return { id: editingTitleId || 'title-' + crypto.randomUUID(), text: $('title-text').value.trim(),
+      emphasis: $('title-emphasis').value, textColor: $('title-color').value,
+      emphasisColor: $('title-emphasis-color').value, fontSize: Number($('title-size').value) || 102,
+      section: editingTitleId ? slide(editingTitleId).section : 'Titles',
+      note: editingTitleId ? slide(editingTitleId).note || '' : '' };
+  }
+  function previewTitle() {
+    const s = titleValues();
+    if (!s.text) s.text = 'Title';
+    $('title-preview').replaceChildren(phrase(s));
+    $('title-size-slider').value = $('title-size').value;
+    $('title-error').textContent = '';
+  }
+  function openTitle(id = null) {
+    editingTitleId = id;
+    const s = id ? slide(id) : {};
+    let text = s.text || '';
+    if (s.breakBefore && s.emphasis) text = text.replace(s.emphasis, '\n' + s.emphasis).replace(/ +\n/g, '\n');
+    $('title-text').value = text;
+    $('title-emphasis').value = s.emphasis || '';
+    $('title-color').value = s.textColor || (!id || s.emphasis ? '#777777' : '#ffffff');
+    $('title-emphasis-color').value = s.emphasisColor || '#ffffff';
+    $('title-size').value = s.fontSize || 102;
+    $('title-position-row').hidden = Boolean(id);
+    $('title-position').max = visible.length + 1;
+    const anchor = selected.size === 1 ? visible.indexOf([...selected][0]) : current;
+    $('title-position').value = Math.min(visible.length + 1, Math.max(1, anchor + 2));
+    $('title-heading').textContent = id ? 'Edit title slide' : 'New title slide';
+    previewTitle(); $('title-editor').showModal(); $('title-text').focus();
+  }
+  $('add-title').onclick = () => openTitle();
+  $('title-form').onsubmit = e => {
+    e.preventDefault(); const s = titleValues(), position = Number($('title-position').value);
+    if (!s.text) { $('title-error').textContent = 'Enter a title.'; return; }
+    if (!editingTitleId && (!Number.isInteger(position) || position < 1 || position > visible.length + 1)) { $('title-error').textContent = 'Choose a position in the deck.'; return; }
+    commit(model.title(state, s, position - 1), editingTitleId ? 'Title updated' : 'Title slide added');
+    $('title-editor').close();
+    if (!editingTitleId) { view = 'active'; $('section').value = ''; $('search').value = ''; selected = new Set([s.id]); renderReview();
+      requestAnimationFrame(() => [...grid.children].find(el => el.dataset.id === s.id)?.scrollIntoView({block:'nearest'})); }
+  };
+  ['title-text','title-emphasis','title-color','title-emphasis-color','title-size'].forEach(id => $(id).oninput = previewTitle);
+  $('title-size-slider').oninput = () => { $('title-size').value = $('title-size-slider').value; previewTitle(); };
+  $('title-cancel').onclick = () => $('title-editor').close();
   function download(content, name, mime) {
     const url = URL.createObjectURL(new Blob([content], { type: mime }));
     const link = document.createElement('a'); link.href = url; link.download = name; link.click();
@@ -274,13 +369,13 @@
   }
   $('export').onclick = () => {
     const data = { format: 'gisday-santaclara-review', version: 1, exportedAt: new Date().toISOString(),
-      ...state, slides: model.active(state).map(id => byId.get(id)) };
+      ...state, slides: model.active(state).map(slide) };
     download(JSON.stringify(data, null, 2), 'GIS-Day-Santa-Clara-edits.json', 'application/json');
     toast('Edits exported. Import them on another browser or send them back for PowerPoint.');
   };
   $('download-deck').onclick = () => {
     const doc = document.documentElement.cloneNode(true);
-    doc.querySelector('#deck-data').textContent = JSON.stringify(model.active(state).map(id => byId.get(id))).replace(/</g, '\\u003c');
+    doc.querySelector('#deck-data').textContent = JSON.stringify(model.active(state).map(slide)).replace(/</g, '\\u003c');
     doc.querySelector('#stage').replaceChildren(); doc.querySelector('#review-grid').replaceChildren();
     doc.querySelectorAll('dialog').forEach(d => d.removeAttribute('open'));
     doc.querySelector('#toast').hidden = true; doc.querySelector('body').className = '';
@@ -310,14 +405,15 @@
   $('select-all').onclick = () => { const shown = matching(); if (shown.length && shown.every(id => selected.has(id))) shown.forEach(id => selected.delete(id)); else shown.forEach(id => selected.add(id)); updateSelection(); };
   $('search').oninput = () => { selected.clear(); renderReview(); };
   $('section').onchange = () => { selected.clear(); renderReview(); };
-  $('prev').onclick = () => go(current - 1); $('next').onclick = () => go(current + 1);
-  $('fullscreen').onclick = full; $('edit').onclick = openReview;
+  $('prev').onclick = () => advance(-1); $('next').onclick = () => advance(1);
+  $('fullscreen').onclick = full; $('edit').onclick = () => openReview();
   $('remove-current').onclick = () => remove(visible[current] ? [visible[current]] : []);
   $('notes').onclick = () => $('speaker').showModal();
   document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => { b.closest('dialog').close(); controls(); });
   document.addEventListener('mousemove', controls);
   document.addEventListener('keydown', e => {
     const typing = e.target.closest('input,textarea,select');
+    if ($('title-editor').open) return;
     if (review.open) {
       if (typing) return;
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); }
@@ -325,10 +421,13 @@
       else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); if (view === 'active') remove([...selected]); }
       return;
     }
+    if (e.key === 'Escape' && !review.open && !document.querySelector('dialog[open]')) {
+      e.preventDefault(); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); openReview(true); return;
+    }
     if (typing || document.querySelector('dialog[open]')) return;
     if (e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
-    if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)) { e.preventDefault(); go(current + 1); }
-    else if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); go(current - 1); }
+    if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)) { e.preventDefault(); advance(1); }
+    else if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); advance(-1); }
     else if (e.key === 'Home') go(0); else if (e.key === 'End') go(visible.length - 1);
     else if (e.key.toLowerCase() === 'f') full();
     else if (['e','o'].includes(e.key.toLowerCase())) openReview();
@@ -339,10 +438,10 @@
   stage.addEventListener('touchstart', e => { startX = e.changedTouches[0].clientX; startY = e.changedTouches[0].clientY; }, { passive: true });
   stage.addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - startX, dy = e.changedTouches[0].clientY - startY;
-    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) go(current + (dx < 0 ? 1 : -1)); else controls();
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) advance(dx < 0 ? 1 : -1); else controls();
   }, { passive: true });
-  stage.addEventListener('click', e => { if (e.clientX > innerWidth * .65) go(current + 1); else if (e.clientX < innerWidth * .35) go(current - 1); else controls(); });
-  const sections = [...new Set(catalog.map(s => s.section).filter(Boolean))];
+  stage.addEventListener('click', e => { if (e.clientX > innerWidth * .65) advance(1); else if (e.clientX < innerWidth * .35) advance(-1); else controls(); });
+  const sections = [...new Set([...catalog.map(s => s.section).filter(Boolean), 'Titles'])];
   sections.forEach(section => { const option = document.createElement('option'); option.value = section; option.textContent = section; $('section').append(option); });
   // Downloaded HTML is an explicit edited snapshot, separate from the live browser draft.
   if (document.documentElement.dataset.exported) state = model.reconcile(ids, null);
